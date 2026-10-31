@@ -34,14 +34,18 @@ public class ProductoControlador implements ActionListener, ListSelectionListene
     public ProductoControlador(Ventana vista, ProductoModelo modelo) throws IOException {
         this.vista = vista;
         this.modelo = modelo;
+
         try {
             cargarDatosConfiguracion();
         } catch (IOException e) {
             System.out.println("no existe el fichero de configuracion" + e.getMessage());
         }
+
         addActionListener(this);
         addListSelectionListener(this);
-        addWindowListener(this);
+
+        vista.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        vista.frame.addWindowListener(this);
     }
 
     public ProductoControlador() {
@@ -187,7 +191,8 @@ public class ProductoControlador implements ActionListener, ListSelectionListene
 
     @Override
     public void windowClosing(WindowEvent windowEvent) {
-        int resp = Util.mensajeConfirmacion("¿Desea cerrar la ventana?", "Salir");
+        int resp = Util.mensajeConfirmacion(
+                "¿Desea cerrar la ventana?", "Salir");
         if (resp == JOptionPane.OK_OPTION) {
             try {
                 guardarConfiguracion();

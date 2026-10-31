@@ -18,6 +18,8 @@
     <rowspec value="center:36px:noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
     <rowspec value="center:32px:noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:45px:noGrow"/>
     <colspec value="fill:178px:noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:99px:noGrow"/>
@@ -205,6 +207,24 @@
         </constraints>
         <properties>
           <text value=""/>
+        </properties>
+      </component>
+      <component id="cdf9f" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="18" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="Cambiar de color:"/>
+        </properties>
+      </component>
+      <component id="71f85" class="javax.swing.JButton" binding="aleatorioButton" default-binding="true">
+        <constraints>
+          <grid row="18" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="Aleatorio"/>
         </properties>
       </component>
     </children>

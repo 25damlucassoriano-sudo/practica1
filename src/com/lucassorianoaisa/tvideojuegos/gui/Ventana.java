@@ -2,6 +2,7 @@ package com.lucassorianoaisa.tvideojuegos.gui;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.lucassorianoaisa.tvideojuegos.base.Producto;
+import java.util.Random;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +28,7 @@ public class Ventana {
     public JLabel añoSalida;
     public JLabel plataforma;
     public JTextField plataformaTxt;
+    public JButton aleatorioButton;
 
     //Creado por mi
     public JFrame frame;
@@ -60,5 +62,23 @@ public class Ventana {
 
         // Color de fondo por defecto
         panel1.setBackground(Color.cyan);
+
+        // Botón para cambiar el color aleatoriamente
+        aleatorioButton = new JButton("Cambiar color");
+
+        // Generador de números aleatorios
+        Random random = new Random();
+
+        // Acción del botón
+        aleatorioButton.addActionListener(e -> {
+
+            int rojo = random.nextInt(256);
+            int verde = random.nextInt(256);
+            int azul = random.nextInt(256);
+
+            Color colorAleatorio = new Color(rojo, verde, azul);
+
+            panel1.setBackground(colorAleatorio);
+        });
     }
 }
