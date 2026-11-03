@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TiendaVideojuegosLucas:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TiendaVideojuegosLucas_jar</output-path>
+    <root id="archive" name="TiendaVideojuegosLucas.jar">
+      <element id="module-output" name="TiendaVideojuegosLucas" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jgoodies-common-1.8.1 (1).jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jgoodies-forms-1.8.0 (1).jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/LGoodDatePicker-10.3.1 (1).jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
