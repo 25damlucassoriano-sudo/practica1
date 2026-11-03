@@ -34,10 +34,11 @@ public class Ventana {
     public JFrame frame;
     public DefaultListModel<Producto> dlmproducto;
 
+
     public Ventana() {
         frame = new JFrame("Productos Modelo Vista Controlador");
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         //Center
@@ -62,9 +63,6 @@ public class Ventana {
 
         // Color de fondo por defecto
         panel1.setBackground(Color.cyan);
-
-        // Botón para cambiar el color aleatoriamente
-        aleatorioButton = new JButton("Cambiar color");
 
         // Generador de números aleatorios
         Random random = new Random();

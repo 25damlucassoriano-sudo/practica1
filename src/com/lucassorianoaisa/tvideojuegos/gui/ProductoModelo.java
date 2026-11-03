@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class ProductoModelo {
     //Lista con todos los productos
-    public ArrayList<Producto> listaProducto;
+    public ArrayList<Producto> listaProducto = new ArrayList<>();
 
     //devolver la lista con todos los productos
     public ArrayList<Producto> obtenerProductos() {
@@ -139,7 +139,10 @@ public class ProductoModelo {
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document documento = builder.parse(fichero);
 
-        NodeList listaElementos = documento.getElementsByTagName("*");
+        NodeList listaElementos = documento.getDocumentElement()
+                .getElementsByTagName("Vehiculos")
+                .item(0)
+                .getChildNodes();
 
         for (int i=0; i<listaElementos.getLength(); i++) {
             Element nodoProducto = (Element) listaElementos.item(i);
@@ -155,7 +158,7 @@ public class ProductoModelo {
                         (LocalDate.parse(nodoProducto.getChildNodes().item(3).getTextContent()));
                 nuevaConsola.setEspacio(Integer.parseInt(nodoProducto.getChildNodes().item(4).getTextContent()));
                 listaProducto.add(nuevaConsola);
-            }else if(nodoProducto.getTagName().equals("Juego")){
+            }else if(nodoProducto.getTagName().equals("Juego")) {
                 nuevoJuego = new Juego();
                 nuevoJuego.setPlataforma(nodoProducto.getChildNodes().item(0).getTextContent());
                 nuevaConsola.setUsado(Boolean.parseBoolean(
@@ -166,7 +169,7 @@ public class ProductoModelo {
                         (LocalDate.parse(nodoProducto.getChildNodes().item(3).getTextContent()));
                 nuevaConsola.setEspacio(Integer.parseInt(nodoProducto.getChildNodes().item(4).getTextContent()));
                 listaProducto.add(nuevoJuego);
-            }else{
+            }else if (nodoProducto.getTagName().equals("Accesorio")) {
                 nuevoAccesorio = new Accesorio();
                 nuevoAccesorio.setPlataforma(nodoProducto.getChildNodes().item(0).getTextContent());
                 nuevaConsola.setUsado(Boolean.parseBoolean(

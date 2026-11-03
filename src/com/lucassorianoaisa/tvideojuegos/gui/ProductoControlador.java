@@ -48,10 +48,6 @@ public class ProductoControlador implements ActionListener, ListSelectionListene
         vista.frame.addWindowListener(this);
     }
 
-    public ProductoControlador() {
-
-    }
-
     private boolean hayCamposVacios() {
         if (vista.precioTxt.getText().isEmpty() ||
         vista.fechaSalidaDPicker.getText().isEmpty()) {
@@ -109,7 +105,6 @@ public class ProductoControlador implements ActionListener, ListSelectionListene
                 if (hayCamposVacios()) {
                     Util.MensajeError("Los campos no pueden estar vacios");
                 }
-                if (vista.consolaRadioButton.isSelected()) {
                     if (vista.consolaRadioButton.isSelected()) {
                         modelo.altaConsola(
                                 vista.usadoRadioButton.isSelected(),
@@ -134,7 +129,6 @@ public class ProductoControlador implements ActionListener, ListSelectionListene
                                 vista.fechaSalidaDPicker.getDate(),
                                 vista.extraTxt.getText());
                     }
-                }
                 limpiarCampos();
                 refrescar();
                 break;
@@ -158,13 +152,17 @@ public class ProductoControlador implements ActionListener, ListSelectionListene
                 break;
 
             case "Exportar":
-                JFileChooser selectorFichero2 = Util.crearSelectorFichero(ultimaRutaExportada,
-                        "Archivos XML","xml");
+                JFileChooser selectorFichero2 = Util.crearSelectorFichero(
+                        ultimaRutaExportada, "Archivos XML", "xml");
                 int opcion2 = selectorFichero2.showSaveDialog(null);
-                if (opcion2==JFileChooser.APPROVE_OPTION) {
+                if (opcion2 == JFileChooser.APPROVE_OPTION) {
+                    File fichero = selectorFichero2.getSelectedFile();
+                    if (!fichero.getName().toLowerCase().endsWith(".xml")) {
+                        fichero = new File(fichero.getAbsolutePath() + ".xml");
+                    }
                     try {
-                        modelo.exportar(selectorFichero2.getSelectedFile());
-                        actualizarDatosConfiguracion(selectorFichero2.getSelectedFile());
+                        modelo.exportar(fichero);
+                        actualizarDatosConfiguracion(fichero);
                     } catch (ParserConfigurationException ex) {
                         ex.printStackTrace();
                     } catch (TransformerException ex) {

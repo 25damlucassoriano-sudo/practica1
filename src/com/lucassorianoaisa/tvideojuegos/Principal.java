@@ -10,6 +10,6 @@ public class Principal {
     public static void main(String[] args) throws IOException {
         Ventana vista = new Ventana();
         ProductoModelo modelo = new ProductoModelo();
-        ProductoControlador controlador = new ProductoControlador();
+        ProductoControlador controlador = new ProductoControlador(vista, modelo);
     }
 }
