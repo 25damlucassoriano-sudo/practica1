@@ -64,10 +64,10 @@ public class Ventana {
         // Color de fondo por defecto
         panel1.setBackground(Color.cyan);
 
-        // Generador de números aleatorios
+        // Generador de números aleatorios (que siempre se me olvida como se hace)
         Random random = new Random();
 
-        // Acción del botón
+        // Aleatorio color
         aleatorioButton.addActionListener(e -> {
 
             int rojo = random.nextInt(256);

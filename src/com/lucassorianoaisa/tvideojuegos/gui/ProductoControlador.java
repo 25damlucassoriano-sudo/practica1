@@ -22,9 +22,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Properties;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addActionListener;
-import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
-import static com.sun.java.accessibility.util.SwingEventMonitor.addListSelectionListener;
 
 public class ProductoControlador implements ActionListener, ListSelectionListener, WindowListener {
     private Ventana vista;
@@ -49,16 +46,19 @@ public class ProductoControlador implements ActionListener, ListSelectionListene
     }
 
     private boolean hayCamposVacios() {
-        if (vista.precioTxt.getText().isEmpty() ||
-        vista.fechaSalidaDPicker.getText().isEmpty()) {
-            return true;
-        }
-        return false;
+        return vista.precioTxt.getText().trim().isEmpty() ||
+                vista.plataformaTxt.getText().trim().isEmpty() ||
+                vista.extraTxt.getText().trim().isEmpty() ||
+                vista.fechaSalidaDPicker.getDate() == null;
     }
 
     private void limpiarCampos() {
         vista.precioTxt.setText(null);
+        vista.plataformaTxt.setText(null);
+        vista.extraTxt.setText(null);
         vista.fechaSalidaDPicker.setText(null);
+        vista.extraTxt.setText(null);
+
     }
 
     public void refrescar() {
@@ -104,31 +104,39 @@ public class ProductoControlador implements ActionListener, ListSelectionListene
             case "Nuevo":
                 if (hayCamposVacios()) {
                     Util.MensajeError("Los campos no pueden estar vacios");
+                    break;
                 }
+                try {
+                    double precio = Double.parseDouble(vista.precioTxt.getText().trim().replace(',', '.'));
                     if (vista.consolaRadioButton.isSelected()) {
                         modelo.altaConsola(
                                 vista.usadoRadioButton.isSelected(),
                                 vista.plataformaTxt.getText(),
-                                Double.parseDouble(vista.precioTxt.getText()),
+                                precio,
                                 vista.fechaSalidaDPicker.getDate(),
-                                Integer.parseInt(vista.extraTxt.getText()));
-
+                                Integer.parseInt(vista.extraTxt.getText().trim()));
                     } else if (vista.videojuegoRadioButton.isSelected()) {
                         modelo.altaJuego(
                                 vista.usadoRadioButton.isSelected(),
                                 vista.plataformaTxt.getText(),
-                                Double.parseDouble(vista.precioTxt.getText()),
+                                precio,
                                 vista.fechaSalidaDPicker.getDate(),
                                 vista.extraTxt.getText());
-
-                    } else {
+                    } else if (vista.accesorioRadioButton.isSelected()) {
                         modelo.altaAccesorio(
                                 vista.usadoRadioButton.isSelected(),
                                 vista.plataformaTxt.getText(),
-                                Double.parseDouble(vista.precioTxt.getText()),
+                                precio,
                                 vista.fechaSalidaDPicker.getDate(),
                                 vista.extraTxt.getText());
+                    } else {
+                        Util.MensajeError("Selecciona el tipo de producto");
+                        break;
                     }
+                } catch (NumberFormatException ex) {
+                    Util.MensajeError("El precio y el espacio (consola) deben ser numeros");
+                    break;
+                }
                 limpiarCampos();
                 refrescar();
                 break;
@@ -173,7 +181,7 @@ public class ProductoControlador implements ActionListener, ListSelectionListene
             case "Consola":
                 vista.extraLbl.setText("Espacio");
                 break;
-            case "Juego":
+            case "Videojuego":
                 vista.extraLbl.setText("Nombre");
                 break;
             case "Accesorio":
@@ -202,6 +210,9 @@ public class ProductoControlador implements ActionListener, ListSelectionListene
     }
 
     private void guardarConfiguracion() throws IOException {
+        if (ultimaRutaExportada == null) {
+            return;
+        }
         Properties configuracion = new Properties();
         configuracion.setProperty("ultimaRutaExportada", ultimaRutaExportada.getAbsolutePath());
         configuracion.store(new PrintWriter
@@ -235,8 +246,11 @@ public class ProductoControlador implements ActionListener, ListSelectionListene
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        if (e.getValueIsAdjusting()) {
+        if (!e.getValueIsAdjusting()) {
             Producto productoSeleccionado = (Producto) vista.list1.getSelectedValue();
+            if (productoSeleccionado == null) {
+                return;
+            }
             vista.plataformaTxt.setText(productoSeleccionado.getPlataforma());
             vista.precioTxt.setText(String.valueOf(productoSeleccionado.getPrecio()));
             // Comprobar si el producto es usado o nuevo

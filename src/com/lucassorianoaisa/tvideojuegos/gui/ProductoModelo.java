@@ -131,58 +131,35 @@ public class ProductoModelo {
     //importar
     public void importarXML(File fichero) throws ParserConfigurationException, IOException, SAXException {
         listaProducto = new ArrayList<Producto>();
-        Consola nuevaConsola = null;
-        Juego nuevoJuego = null;
-        Accesorio nuevoAccesorio = null;
-
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document documento = builder.parse(fichero);
 
-        NodeList listaElementos = documento.getDocumentElement()
-                .getElementsByTagName("Vehiculos")
+        NodeList listaElementos = documento.getElementsByTagName("Vehiculos")
                 .item(0)
                 .getChildNodes();
 
-        for (int i=0; i<listaElementos.getLength(); i++) {
+        for (int i = 0; i < listaElementos.getLength(); i++) {
+            if (!(listaElementos.item(i) instanceof Element)) {
+                continue;
+            }
             Element nodoProducto = (Element) listaElementos.item(i);
-            if (nodoProducto.getTagName().equals("Consola")) {
-                nuevaConsola = new Consola();
-                nuevaConsola.setPlataforma(nodoProducto.getChildNodes().item(0).getTextContent());
-                //se cambia esta linea y se usa el parse para poder usar el boolean
-                nuevaConsola.setUsado(Boolean.parseBoolean(
-                        nodoProducto.getChildNodes().item(1).getTextContent()
-                ));
-                nuevaConsola.setPrecio(Double.parseDouble(nodoProducto.getChildNodes().item(2).getTextContent()));
-                nuevaConsola.setFechaSalida
-                        (LocalDate.parse(nodoProducto.getChildNodes().item(3).getTextContent()));
-                nuevaConsola.setEspacio(Integer.parseInt(nodoProducto.getChildNodes().item(4).getTextContent()));
-                listaProducto.add(nuevaConsola);
-            }else if(nodoProducto.getTagName().equals("Juego")) {
-                nuevoJuego = new Juego();
-                nuevoJuego.setPlataforma(nodoProducto.getChildNodes().item(0).getTextContent());
-                nuevaConsola.setUsado(Boolean.parseBoolean(
-                        nodoProducto.getChildNodes().item(1).getTextContent()
-                ));
-                nuevoJuego.setPrecio(Double.parseDouble(nodoProducto.getChildNodes().item(2).getTextContent()));
-                nuevoJuego.setFechaSalida
-                        (LocalDate.parse(nodoProducto.getChildNodes().item(3).getTextContent()));
-                nuevaConsola.setEspacio(Integer.parseInt(nodoProducto.getChildNodes().item(4).getTextContent()));
-                listaProducto.add(nuevoJuego);
-            }else if (nodoProducto.getTagName().equals("Accesorio")) {
-                nuevoAccesorio = new Accesorio();
-                nuevoAccesorio.setPlataforma(nodoProducto.getChildNodes().item(0).getTextContent());
-                nuevaConsola.setUsado(Boolean.parseBoolean(
-                        nodoProducto.getChildNodes().item(1).getTextContent()
-                ));
-                nuevoAccesorio.setPrecio(Double.parseDouble(nodoProducto.getChildNodes().item(2).getTextContent()));
-                nuevoAccesorio.setFechaSalida
-                        (LocalDate.parse(nodoProducto.getChildNodes().item(3).getTextContent()));
-                nuevoAccesorio.setTipo(nodoProducto.getChildNodes().item(4).getTextContent());
-                listaProducto.add(nuevoAccesorio);
+            String etiqueta = nodoProducto.getTagName();
+            // El orden de exportar() es: usado, Plataforma, precio, fechaSalida, dato extra
+            boolean usado = Boolean.parseBoolean(nodoProducto.getChildNodes().item(0).getTextContent());
+            String plataforma = nodoProducto.getChildNodes().item(1).getTextContent();
+            Double precio = Double.parseDouble(nodoProducto.getChildNodes().item(2).getTextContent());
+            LocalDate fecha = LocalDate.parse(nodoProducto.getChildNodes().item(3).getTextContent());
+            String extra = nodoProducto.getChildNodes().item(4).getTextContent();
+
+            if (etiqueta.equals("Consola")) {
+                listaProducto.add(new Consola(usado, plataforma, precio, fecha, Integer.parseInt(extra)));
+            } else if (etiqueta.equals("Juego")) {
+                listaProducto.add(new Juego(usado, plataforma, precio, fecha, extra));
+            } else if (etiqueta.equals("Accesorio")) {
+                listaProducto.add(new Accesorio(usado, plataforma, precio, fecha, extra));
             }
         }
-
     }
 
 
