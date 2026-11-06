@@ -28,6 +28,6 @@ public class Accesorio extends Producto {
     //toString
     @Override
     public String toString() {
-        return "Accesorio: " + Tipo + "por: " + getPrecio() + '\'';
+        return "Accesorio: " + Tipo + "por: " + getPrecio() + " para:" + getPlataforma();
     }
 }
